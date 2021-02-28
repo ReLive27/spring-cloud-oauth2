@@ -1,0 +1,38 @@
+server:
+  port: 8096
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: oauth-server  #payment_routh 路由的ID，没有固定规则但要求唯一，建议配合服务名
+          uri: lb://oauth-server
+          predicates:
+            Path=/iam/** #断言，路径相匹配的进行路由
+          filters:
+            - StripPrefix=1
+        - id: resource-server  #payment_routh 路由的ID，没有固定规则但要求唯一，建议配合服务名
+          uri: lb://resource-server
+          predicates:
+            Path=/resource/** #断言，路径相匹配的进行路由
+
+      discovery:
+        locator:
+          enabled: true  #开启从注册中心动态创建路由功能，利用微服务名进行路由
+
+eureka:
+  instance:
+    hostname: cloud-gateway
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:5001/eureka
+
+ignore:
+  path: /health/**,/iam/**
+
+security:
+  oauth2:
+    client:
+      authorization:
+        check-token-uri: http://localhost:6001/oauth/check_token

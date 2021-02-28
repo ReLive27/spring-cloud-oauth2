@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.relive.mapper.RoleMapper">
+
+    <select id="getPermissionCodeByRoleCode" resultType="java.lang.String">
+        SELECT
+        per.permission_code
+        FROM
+        role r,
+        permission per,
+        role_2_permission r2p
+        WHERE
+        r.id = r2p.role_id
+        AND r2p.permission_id = per.id
+        AND r.role_code IN
+        <foreach collection="list" item="code" open="(" close=")" separator=",">
+            #{code}
+        </foreach>
+
+    </select>
+
+    <select id="getRoleByUserId" resultType="com.relive.entity.Role">
+        SELECT
+        role.*
+        FROM
+        role,
+        user_2_role u2r,
+        user
+        WHERE
+        role.id = u2r.role_id
+        AND u2r.user_id = user.id
+        AND user.id =#{userId}
+    </select>
+
+</mapper>

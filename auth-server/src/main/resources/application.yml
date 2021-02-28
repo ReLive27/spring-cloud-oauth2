@@ -1,0 +1,46 @@
+server:
+  port: 6001
+
+spring:
+  application:
+    name: oauth-server
+  redis:
+    host: 127.0.0.1
+    database: 0
+    port: 6380
+    #password: 123456
+    timeout: 1800000
+    lettuce:
+      pool:
+        max-active: 20
+        max-wait: -1
+        max-idle: 5
+        min-idle: 0
+      shutdown-timeout: 100
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/oauth2?createDatabaseIfNotExist=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: root
+      password: 123456
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    check-location: true
+    validate-on-migrate: true
+  #允许存在多个Feign调用相同Service的接口
+  main:
+    allow-bean-definition-overriding: true
+
+management:
+  endpoint:
+    health:
+      enabled: true
+
+eureka:
+  instance:
+    hostname: 127.0.0.1
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:5001/eureka
