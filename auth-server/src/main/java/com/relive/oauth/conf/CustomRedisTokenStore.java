@@ -23,6 +23,7 @@ public class CustomRedisTokenStore extends RedisTokenStore {
 
     public CustomRedisTokenStore(RedisConnectionFactory connectionFactory, JdbcClientDetailsService clientDetailsService) {
         super(connectionFactory);
+        super.setAuthenticationKeyGenerator(new CustomAuthenticationKeyGenerator());
         this.jdbcClientDetailsService = clientDetailsService;
     }
 
@@ -62,5 +63,6 @@ public class CustomRedisTokenStore extends RedisTokenStore {
         int accessTokenValiditySeconds = 60;
         return accessTokenValiditySeconds;
     }
+
 }
 
