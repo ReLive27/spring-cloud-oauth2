@@ -2,6 +2,7 @@ package com.relive.oauth.conf;
 
 import com.relive.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,12 +23,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private RoleService roleService;
 
+    @Value("${ignore.path:/actuator/health}")
+    private String ignorePath;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 //TODO 服务之间如何通过认证
-                .antMatchers("/roles/**","/user/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers(ignorePath.split(",")).permitAll()
+//                .anyRequest().authenticated()
                 .and()
                 .addFilter(new TokenAuthenticationFilter(authenticationManager(),roleService))
                 .csrf().disable()
