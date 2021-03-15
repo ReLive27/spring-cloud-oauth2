@@ -12,7 +12,6 @@
         <module>resource-server</module>
         <module>gateway</module>
         <module>eureka</module>
-        <module>third-party-applications</module>
         <module>commons</module>
         <module>resource-server-api</module>
         <module>auth-server</module>
